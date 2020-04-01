@@ -1,0 +1,17 @@
+{
+  "sampleData": {
+    "41faf494-ed58-4bac-ad84-7d3df9e5c51c": {
+      "payload": "sample_data/unknown.dwl",
+      "vars-workerDashboardStats": "sample_data/unknown.json"
+    },
+    "f415984f-6a79-4828-aa3b-beb45702ed0c": {
+      "payload": "sample_data/list_json_1.json"
+    },
+    "5ccf95a4-0b69-4e09-854c-b209051fe94c": {
+      "payload": "sample_data/json.json"
+    },
+    "ae1b5e1a-384e-4afb-812a-a3e47695dbb7": {
+      "payload": "sample_data/list_json.json"
+    }
+  }
+}

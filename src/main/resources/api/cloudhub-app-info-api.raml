@@ -1,0 +1,64 @@
+#%RAML 1.0
+title: CloudHub App Info API
+description: |
+  This API traverses an orgId to retrieve all of the deployed applications within the org. You can easily see the workerSize, number of workers, Mule version, Max CPU, Max Memroy and other information.
+
+  You need to provide:
+  - orgId: found in Access Management
+  - username: your Anypoint login username
+  - password: your Anypoint login password
+  - client_id: for the application you registered to use the API
+  - client_secret: for the application you registered to use the API
+  - startDateTime for the stats collection period
+  - endDateTime for the stats collection period
+
+  To get your client_id and client_secret you need to:
+  - open the asset in exchange 
+  - on the API portal page click REQUEST ACCESS 
+  - create a new application 
+  - you will be presented with a client_id and secret. 
+
+  The result of the API call is a CSV emailed to you that you can drop into a file and load up into your favorite analytics tool - or Excel, Google Sheets, ...
+
+  Be patient!!! Depending on the size of your org the call could take a while!!!
+version: v1
+baseUri: http://localhost:8081
+#baseUri: https://bkr-cloudhub-app-info-api-v1.us-e1.cloudhub.io/api
+mediaType: [ application/json ]
+traits:
+  secured: !include exchange_modules/61250567-5186-486c-89da-cf518a767d6e/client-id-enforcement-trait/1.0.3/client-id-enforcement-trait.raml
+  headers: !include exchange_modules/61250567-5186-486c-89da-cf518a767d6e/rest-header-traits/1.0.1/rest-header-traits.raml
+  qp: !include traits/request.raml
+/utilization:
+  /org:
+    is: [ headers ]
+    /{orgId}:
+      uriParameters:
+        orgId: 
+          description: Obtain the orgId from the Access Management tab in the Anypoint Platform UI. Make sure you are in the top org on which you want to run the report. You want the Business Group ID value. 
+          example: b10a5f48-378e-4760-80d2-ccac73df7
+      /cpuUtilization:
+        get:
+          is: [qp, secured]
+          queryParameters:
+            startDateTime:
+              type: datetime
+              required: true
+              example: "2019-03-05T00:00:00.000Z"
+            endDateTime:
+              type: datetime
+              required: true
+              example: "2019-04-05T00:00:00.000Z"
+            maxCPUUtilization: 
+              description: Only returns apps where CPU is greater than this number. This is for future use
+              type: integer
+              required: true
+              example: 50
+              default: 50
+          responses:
+            200:
+/objectStore:
+  /all:
+    get:
+      responses:
+        200:

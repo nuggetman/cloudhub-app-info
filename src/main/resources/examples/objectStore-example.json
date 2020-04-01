@@ -1,0 +1,25 @@
+[
+{
+  "Sales-Sandbox-bkr-account-api-sap-get-v5-mock-i-0cef7c6a521bef57b": {
+    "organization": "Retail",
+    "bgTree": "Sales",
+    "environment": "Sandbox",
+    "application": "bkr-account-api-sap-get-v5-mock",
+    "appLastUpdateTime": 1551648077133,
+    "appStatus": "STARTED",
+    "workerCount": 1,
+    "workerSize": 0.1,
+    "muleVersion": "4.1.5",
+    "workerId": "i-0cef7c6a521bef57b",
+    "workerIpAddress": "54.145.38.118",
+    "maxCPUPct": 1.4012289005041205,
+    "maxMemoryUsedPct": 48.56853410469454,
+    "maxMemoryTotalUsed": 2.3805563146666667E8,
+    "maxMemoryTotalMax": 490143744,
+    "maxDiskReadBytes": null,
+    "maxDiskWriteBytes": 0,
+    "maxNetworkIn": 23247.266666666666,
+    "maxNetworkOut": 35601.933333333334
+  }
+  }
+  ]

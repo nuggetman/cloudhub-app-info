@@ -9,10 +9,10 @@ https:
     attempts: "4"
 
 api:
-  id: "15683481"
+  id: "1"
 
 smtp:
-  hostname: smtp.gmail.com
-  port: "465"
-  username: muley.brett@gmail.com
-  password: wkfxbknhdolxtyts
+  hostname: 
+  port: 
+  username: 
+  password: 

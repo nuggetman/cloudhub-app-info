@@ -19,7 +19,6 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
         <http:request-connection protocol="HTTPS" host="anypoint.mulesoft.com" port="443" connectionIdleTimeout="60000"/>
     </http:request-config>
     <configuration-properties doc:name="Configuration properties" doc:id="c4100394-545d-46e9-9d48-003d42dceaad" file="mule-dev.yaml" />
-	<os:object-store name="lock" doc:name="Object store" doc:id="15536814-ed5f-4c91-abeb-b1da9b11f400" persistent="false" />
 	<flow name="cloudhub-app-info-api-main">
         <http:listener config-ref="cloudhub-app-info-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]" />
@@ -29,7 +28,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
         </http:listener>
         <apikit:router config-ref="cloudhub-app-info-api-config" />
         <error-handler>
-            <on-error-propagate type="APIKIT:BAD_REQUEST" enableNotifications="true" logException="true">
+            <on-error-propagate type="APIKIT:BAD_REQUEST">
                 <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="d5f2b522-b976-4726-90c2-89f9c602a8d6">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
@@ -69,7 +68,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_ACCEPTABLE" enableNotifications="true" logException="true">
-                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="d1f1111e-e448-43fc-908e-513f1c85a871">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -77,7 +76,7 @@ output application/json
 {message: "Not acceptable"}]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus"><![CDATA[406]]></ee:set-variable>
+                        <ee:set-variable variableName="httpStatus">406</ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
@@ -168,23 +167,13 @@ output application/java
 }]]></ee:set-variable>
             </ee:variables>
         </ee:transform>
-		<flow-ref doc:name="call login" doc:id="a18ed730-5346-4a2a-8c46-31fdc1b1537c" name="login-subflow" target="login"/>
-		<choice doc:name="Choice" doc:id="0f0d7180-2fe4-4bae-a856-181139513f69" >
-			<when expression="#[daysBetween(vars.requestParams.startDateTime,vars.requestParams.endDateTime) &lt;= 7]">
-				<os:retrieve doc:name="Retrieve the objectStore lock" doc:id="4f8c5226-867c-4543-a113-6fbbcf52d1d6" key="lock" objectStore="lock" target="osLock">
-					<os:default-value ><![CDATA[#[false]]]></os:default-value>
-				</os:retrieve>
-				<choice doc:name="Choice" doc:id="5ecddd5b-acc1-43a3-bdfc-42a58d0ef729" >
-					<when expression="vars.osLock == false">
-						<os:store doc:name="lock the objectStore to prevent concurrent use" doc:id="0db43b07-f917-497e-ba2b-6d6512e5ea67" key="lock" objectStore="lock">
-							<os:value ><![CDATA[#[true]]]></os:value>
-						</os:store>
-						<async doc:name="Async" doc:id="ca873fc1-5462-4d70-9c1d-f0892000ab34">
-			<flow-ref doc:name="Call processOrg" doc:id="f8f96d23-7ada-462a-9a76-9bf84f4de867" name="processRootOrg" />
+		<flow-ref doc:name="login-subflow" doc:id="a18ed730-5346-4a2a-8c46-31fdc1b1537c" name="login-subflow" target="login"/>
+		<async doc:name="Async" doc:id="ca873fc1-5462-4d70-9c1d-f0892000ab34" >
+			<flow-ref doc:name="processRootOrg" doc:id="f8f96d23-7ada-462a-9a76-9bf84f4de867" name="processRootOrg" />
 		</async>
-						<ee:transform doc:name="Transform Message" doc:id="4afdfd46-2566-4b74-9bdb-f61500d50eea">
-			<ee:message>
-				<ee:set-payload><![CDATA[%dw 2.0
+		<ee:transform doc:name="Transform Message" doc:id="4afdfd46-2566-4b74-9bdb-f61500d50eea" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -192,16 +181,7 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-					</when>
-					<otherwise >
-						<raise-error doc:name="Raise in use error" doc:id="61ba20a0-9ed3-42b5-bfa3-5d2830234af9" type="APP:ANALYSIS_IN_PROCESS_TRY_LATER" description="The CloudHub Utilization App is currently in use. Try again later"/>
-					</otherwise>
-				</choice>
-			</when>
-			<otherwise >
-				<raise-error doc:name="Raise timeframe too long error" doc:id="bd55442d-bc4b-44c4-a545-df64e3c67ca6" type="APP: DURATION_TOO_LONG" description='#["EndDateTime (" ++ vars.requestParams.endDateTime ++ ") must be within 7 days of StartDateTime(" ++ vars.requestParams.startDateTime ++ ")"]'/>
-			</otherwise>
-		</choice>
+		<logger level="INFO" message="All done with #[vars.parentOrgName]!!!" />
 		<error-handler >
 			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="5cf1c181-1118-4540-a4a2-b6b7598395aa" >
 				<ee:transform doc:name="Transform Message" doc:id="8a33e5da-6dab-4a80-88b1-08c18e62adc1" >

@@ -22,7 +22,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			</http:request>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="8c907c56-fccb-4780-9e07-ec1c355e8a88" >
-					<flow-ref doc:name="Flow Reference" doc:id="42538bc8-b530-49bb-b037-6d0a57c91368" name="error-handler-subflow"/>
+					<flow-ref doc:name="error-handler-subflow" doc:id="42538bc8-b530-49bb-b037-6d0a57c91368" name="error-handler-subflow"/>
 				</on-error-continue>
 			</error-handler>
 		</try>
@@ -43,7 +43,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		</http:request>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="2ff6ae4c-71d2-451c-8ecd-ec9fb09c7ad7" >
-					<flow-ref doc:name="Flow Reference" doc:id="b84cd812-78cc-4d11-9509-746cdf284095" name="error-handler-subflow"/>
+					<flow-ref doc:name="error-handler-subflow" doc:id="b84cd812-78cc-4d11-9509-746cdf284095" name="error-handler-subflow"/>
 				</on-error-continue>
 			</error-handler>
 		</try>
@@ -60,7 +60,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 		</http:request>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="b5205238-868a-400a-8d26-1ec9550aecb2" >
-					<flow-ref doc:name="Flow Reference" doc:id="d19bf0ac-7be5-4a1f-ab5b-e1afff2340ea" name="error-handler-subflow"/>
+					<flow-ref doc:name="error-handler-subflow" doc:id="d19bf0ac-7be5-4a1f-ab5b-e1afff2340ea" name="error-handler-subflow"/>
 				</on-error-continue>
 			</error-handler>
 		</try>
@@ -72,7 +72,7 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 ---
 {
 	"Authorization" : "bearer " ++ vars.login.access_token,
-	"X-ANYPNT-ENV-ID" : vars.currentEnv.id
+	"x-anypnt-env-id" : vars.currentEnv.id
 }]]]></http:headers>
 			<http:uri-params ><![CDATA[#[output application/java
 ---
@@ -82,13 +82,13 @@ http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/
 			<http:query-params ><![CDATA[#[output application/java
 ---
 {
-	"startDate" : vars.requestParams.startDateTime,
-	"endDate" : vars.requestParams.endDateTime
+	"endDate" : vars.requestParams.endDateTime,
+	"startDate" : vars.requestParams.startDateTime
 }]]]></http:query-params>
 		</http:request>
 			<error-handler >
 				<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="74a867f4-4a8e-4261-8c70-9b66d661857a" >
-					<flow-ref doc:name="Flow Reference" doc:id="5f62f865-a206-4304-9546-3f79f7f87ffd" name="error-handler-subflow"/>
+					<flow-ref doc:name="error-handler-subflow" doc:id="5f62f865-a206-4304-9546-3f79f7f87ffd" name="error-handler-subflow"/>
 				</on-error-continue>
 			</error-handler>
 		</try>
