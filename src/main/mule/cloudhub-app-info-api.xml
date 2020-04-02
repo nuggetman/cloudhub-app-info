@@ -197,16 +197,4 @@ output application/json
 			</on-error-continue>
 		</error-handler>
     </flow>
-	<flow name="get:\objectStore\all:cloudhub-app-info-api-config">
-        <os:retrieve-all doc:name="Retrieve all" doc:id="d842338b-a869-4859-96d7-fac77a12596d" objectStore="workerStats"/>
-		<ee:transform doc:name="Transform Message" doc:id="4ec9062e-fd77-49de-8b8a-4684303fe6ca" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
-output application/json
----
-payload]]></ee:set-payload>
-			</ee:message>
-		</ee:transform>
-		<logger level="INFO" message="get:\objectStore\all:cloudhub-app-info-api-config" />
-    </flow>
 </mule>

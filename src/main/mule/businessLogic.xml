@@ -50,7 +50,7 @@ http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mul
 		<set-variable value="#[vars.orgHierarchy.name!]" doc:name="Set parentOrgName" doc:id="13acfcdf-20f2-4cc2-b204-67b2d80a125b" variableName="parentOrgName" />
 		<set-variable value='#[""]' doc:name="Initialize bgTree" doc:id="207180f4-b907-4109-84b6-ba751ad196a2" variableName="bgTree"/>
 		<set-variable variableName="breadcrumb" value='#[output application/java --- vars.parentOrgName!]' doc:name="set breadcrumb" doc:id="3e6e278f-04d0-4e6f-94bd-bd758b26e75f"/>
-		<flow-ref doc:name="Flow Reference" doc:id="433f2330-404c-45b5-8505-b64778ace654" name="processEnvironmentsForBG"/>
+		<flow-ref doc:name="processRootOrg" doc:id="433f2330-404c-45b5-8505-b64778ace654" name="processEnvironmentsForBG"/>
 		<flow-ref doc:name="processOrgHierarchy" doc:id="73a0efc8-bb5d-47dd-960e-e9bdc3560fd7" name="processOrgHierarchy"/>
 		<os:retrieve-all doc:name="Retrieve all" doc:id="d538feac-cff4-4d72-84f5-fe03019d5859" objectStore="workerStats"/>
 		<ee:transform doc:name="Transform Message" doc:id="062a75d2-a353-48d1-b330-8a40da1e31c5" >
